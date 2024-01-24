@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title th:text="${project.getName()}"/>
+    </head>
+    <body>
+        <h3>Users</h3>
+        <div th:each="user : ${project.getUserSet}">
+            <span th:text="${user.getUsername}"/>
+        </div>
+
+        <h3>Tasks</h3>
+        <div th:each="task : ${project.getTaskSet}">
+            <span th:text="${task.getTitle} + ' ' + ${task.getCreationDate}"/>
+        </div>
+    </body>
+</html>

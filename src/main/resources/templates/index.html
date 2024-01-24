@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Title</title>
+    </head>
+    <body>
+        <h1>Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span></h1>
+        <input type="text" id="login" placeholder="username">
+        <input type="password" id="password" placeholder="password">
+        <input sec:authorize="!isAuthenticated()" type="button" value="Вход" onclick="login()">
+        <input sec:authorize="isAuthenticated()" type="button" value="Выход" onclick="location.href='/logout'">
+
+        <div th:each="project : ${projects}">
+            <a th:href="'project/' + ${project.getProjectId}" th:text="${project.getName}"/>
+        </div>
+
+        <script type="text/javascript">
+            async function login() {
+                let username = document.getElementById('login').value;
+                let password = document.getElementById('password').value;
+
+                let userData = {
+                    username: username,
+                    password: password
+                };
+
+                console.log(JSON.stringify(userData));
+
+                let response = await fetch('/auth/rest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                let result = response.status;
+                alert(result);
+
+                if (result === 200) location.reload();
+            }
+        </script>
+
+    </body>
+</html>
