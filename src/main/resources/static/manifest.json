@@ -1,0 +1,13 @@
+{
+  "name" : "TaskManager",
+  "display" : "standalone",
+  "icons": [
+    {
+      "src": "img/logo-2.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url" : "http://192.168.0.104:8080/",
+  "scope" : "/"
+}
