@@ -1,0 +1,91 @@
+<div th:fragment="nav-modal">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img th:src="@{/img/logo-2.png}" width="30" height="30"> TaskManager
+            </a>
+            <a class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasNavbar" role="button" aria-controls="offcanvasNavbar">
+                <img th:src="@{/img/user-profile.png}" width="30" height="30">
+            </a>
+        </div>
+    </nav>
+
+    <!-- Offcanvas Block --->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 sec:authorize="isAuthenticated()">Привет, <span th:remove="tag" sec:authentication="name"></span>! 👋🏻</h5>
+            <h5 sec:authorize="!isAuthenticated()">Привет, незнакомец! 🥷🏻</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="dropdown mt-3">
+                <!-- Button trigger modal -->
+                <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    Вход
+                </button>
+                <button sec:authorize="isAuthenticated()" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                    Выйти
+                </button>
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Dropdown button
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div sec:authorize="!isAuthenticated()" class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="loginModalLabel">Вход</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col g-3 align-items-center">
+                        <div class="col-auto">
+                            <label for="login" class="col-form-label">Логин/email</label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="login" class="form-control">
+                        </div>
+                        <div class="col-auto">
+                            <label for="password" class="col-form-label">Пароль</label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="password" id="password" class="form-control" aria-describedby="passwordHelpInline">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="login()">Вход</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div sec:authorize="isAuthenticated()" class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="logoutModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены, что хотите выйти из своего аккаунта?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" onclick="location.href='/logout'">Выйти</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Остаться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

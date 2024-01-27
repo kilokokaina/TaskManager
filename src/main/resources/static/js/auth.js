@@ -18,7 +18,8 @@ async function login() {
     });
 
     let result = response.status;
-    alert(result);
 
-    if (result === 200) location.reload();
+    if (result === 200) {
+        location.reload();
+    }
 }
