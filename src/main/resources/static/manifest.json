@@ -1,13 +1,14 @@
 {
   "name" : "TaskManager",
   "display" : "standalone",
+  "description": "Application for optimizing working process in department",
   "icons": [
     {
       "src": "img/logo-2.png",
-      "sizes": "512x512",
+      "sizes": "256x256",
       "type": "image/png"
     }
   ],
-  "start_url" : "http://192.168.0.104:8080/",
+  "start_url" : "/",
   "scope" : "/"
 }

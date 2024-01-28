@@ -7,6 +7,7 @@ public class TaskDTO {
 
     private String title;
     private String description;
-    private String[] targetUser;
+    private long[] targetUser;
+    private long projectId;
 
 }

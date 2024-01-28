@@ -2,9 +2,12 @@ package com.work.taskmanager;
 
 import com.work.taskmanager.model.Department;
 import com.work.taskmanager.model.Organization;
+import com.work.taskmanager.model.Task;
 import com.work.taskmanager.model.User;
+import com.work.taskmanager.repository.ProjectRepository;
 import com.work.taskmanager.service.impl.DepServiceImpl;
 import com.work.taskmanager.service.impl.OrgServiceImpl;
+import com.work.taskmanager.service.impl.TaskServiceImpl;
 import com.work.taskmanager.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +22,16 @@ import java.util.*;
 @SpringBootApplication
 public class TaskManagerApplication {
 
+    private final ProjectRepository projectRepository;
     private final UserServiceImpl userService;
-    private final DepServiceImpl depService;
-    private final OrgServiceImpl orgService;
+    private final TaskServiceImpl taskService;
 
     @Autowired
-    public TaskManagerApplication(UserServiceImpl userService, DepServiceImpl depService, OrgServiceImpl orgService) {
+    public TaskManagerApplication(UserServiceImpl userService, TaskServiceImpl taskService,
+                                  ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
         this.userService = userService;
-        this.depService = depService;
-        this.orgService = orgService;
+        this.taskService = taskService;
     }
 
     public static void main(String[] args) {
@@ -37,12 +41,11 @@ public class TaskManagerApplication {
     @Bean
     public CommandLineRunner cmd() {
         return args -> {
-            List<Organization> organizationList = orgService.findAll();
-            for (Organization organization : organizationList) {
-                String orgUUID = UUID.randomUUID().toString();
-                organization.setOrgUUID(orgUUID);
-                orgService.save(organization);
-            }
+            Task task = taskService.findById(3L);
+            Set<User> userSet = task.getTargetUser();
+            userSet.add(userService.findById(5L));
+            task.setTargetUser(userSet);
+//            taskService.save(task);
         };
     }
 

@@ -2,6 +2,7 @@ package com.work.taskmanager.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,13 +28,6 @@ public class User implements UserDetails {
     )
     private Set<Organization> organizationSet;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "task_user", joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "task_id")
-//    )
-//    private List<Task> taskList;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -58,5 +52,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public User() {}
 
 }

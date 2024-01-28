@@ -3,6 +3,7 @@ package com.work.taskmanager.api;
 import com.work.taskmanager.model.Task;
 import com.work.taskmanager.model.User;
 import com.work.taskmanager.model.dto.TaskDTO;
+import com.work.taskmanager.repository.ProjectRepository;
 import com.work.taskmanager.service.impl.TaskServiceImpl;
 import com.work.taskmanager.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,8 @@ public class TaskAPI {
 
     private final TaskServiceImpl taskService;
     private final UserServiceImpl userService;
+
+    public @Autowired ProjectRepository projectRepository;
 
     @Autowired
     public TaskAPI(TaskServiceImpl taskService, UserServiceImpl userService) {

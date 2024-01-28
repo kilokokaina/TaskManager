@@ -19,6 +19,7 @@
         <main>
             <div th:insert="~{partials/nav-modal :: nav-modal}"></div>
             <div class="container mt-1">
+                <h3>Проекты</h3>
                 <div th:each="project : ${projects}">
                     <a th:href="'project/' + ${project.getProjectId}" th:text="${project.getName}"/>
                 </div>
