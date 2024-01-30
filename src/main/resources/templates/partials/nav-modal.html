@@ -11,30 +11,61 @@
     </nav>
 
     <!-- Offcanvas Block --->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="--bs-offcanvas-width: 300px;">
         <div class="offcanvas-header">
             <h5 sec:authorize="isAuthenticated()">Привет, <span th:remove="tag" sec:authentication="name"></span>! 👋🏻</h5>
             <h5 sec:authorize="!isAuthenticated()">Привет, незнакомец! 🥷🏻</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <div class="dropdown mt-3">
-                <!-- Button trigger modal -->
-                <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
-                    Вход
-                </button>
-                <button sec:authorize="isAuthenticated()" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                    Выйти
-                </button>
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    Dropdown button
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="accordion" id="accordionProjects">
+                        <div class="accordion-item" style="border: none">
+                            <div class="accordion-header d-flex justify-content-center">
+                                <a class="d-block link-body-emphasis text-decoration-none" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOneProjects"
+                                   aria-expanded="true" aria-controls="collapseOneProjects">
+                                    <img th:src="@{/img/projects-2.png}" width="30" height="30"> Проекты
+                                </a>
+                            </div>
+                            <div id="collapseOneProjects" class="accordion-collapse collapse" data-bs-parent="#accordionProjects">
+                                <div class="accordion-body">
+                                    <ol class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-start" th:each="project : ${projects}">
+                                            <a class="link-body-emphasis text-decoration-none" th:href="'/project/' + ${project.getProjectId}" th:text="${project.getName}"/>
+                                            <span class="badge bg-primary rounded-pill">14</span>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-center">
+                    <div>
+                        <a class="d-block link-body-emphasis text-decoration-none" role="button">
+                            <img th:src="@{/img/task-2.png}" width="30" height="30"> Мои задачи
+                        </a>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-center">
+                    <div>
+                        <a class="d-block link-body-emphasis text-decoration-none" role="button">
+                            <img th:src="@{/img/settings-2.png}" width="30" height="30"> Настройки
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="offcanvas-footer d-flex justify-content-center mb-3">
+            <!-- Button trigger modal -->
+            <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                Вход
+            </button>
+            <button sec:authorize="isAuthenticated()" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                Выйти
+            </button>
         </div>
     </div>
 

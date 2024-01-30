@@ -2,6 +2,7 @@ package com.work.taskmanager.controller;
 
 import com.work.taskmanager.model.Project;
 import com.work.taskmanager.model.Task;
+import com.work.taskmanager.repository.ProjectRepository;
 import com.work.taskmanager.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,9 +20,11 @@ import java.util.stream.Collectors;
 public class ProjectController {
 
     private final UserServiceImpl userService;
+    private final ProjectRepository projectRepository;
 
     @Autowired
-    public ProjectController(UserServiceImpl userService) {
+    public ProjectController(ProjectRepository projectRepository, UserServiceImpl userService) {
+        this.projectRepository = projectRepository;
         this.userService = userService;
     }
 
@@ -30,6 +33,10 @@ public class ProjectController {
         Set<Task> taskSet = project.getTaskSet().stream().filter(task ->
             task.getTargetUser().contains(userService.findByUsername(authentication.getName()))
         ).collect(Collectors.toSet());
+
+        model.addAttribute("projects", projectRepository.findByUserId(
+                userService.findByUsername(authentication.getName()).getUserId())
+        );
 
         model.addAttribute("project", project);
         model.addAttribute("taskSet", taskSet);

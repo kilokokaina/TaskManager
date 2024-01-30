@@ -31,7 +31,6 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Автор</th>
                                     <th scope="col">Название</th>
-                                    <th scope="col">Описание</th>
                                     <th scope="col">Дата создания</th>
                                     <th scope="col">Дата выполнения</th>
                                 </tr>
@@ -41,7 +40,6 @@
                                     <th scope="row" th:text="${task.getTaskId}"/>
                                     <th scope="row" th:text="${task.getAuthor.getUsername}"/>
                                     <td th:text="${task.getTitle}"/>
-                                    <td th:text="${task.getDescription}"/>
                                     <td th:text="${task.getCreationDate}"/>
                                     <td th:text="${task.getTargetDate}"/>
                                 </tr>
