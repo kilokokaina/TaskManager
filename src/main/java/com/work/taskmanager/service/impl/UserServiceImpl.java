@@ -1,6 +1,7 @@
 package com.work.taskmanager.service.impl;
 
 import com.work.taskmanager.exception.UserAlreadyExistException;
+import com.work.taskmanager.model.Task;
 import com.work.taskmanager.model.User;
 import com.work.taskmanager.repository.UserRepository;
 import com.work.taskmanager.service.UserService;
@@ -9,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -26,6 +30,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserAlreadyExistException(String.format("User %s already exist", user.getUsername()));
         }
         return userRepository.save(user);
+    }
+
+    public void addTask(User user, Task task) {
+        List<Task> userTasks = user.getTaskList();
+
+        userTasks.add(task);
+        user.setTaskList(userTasks);
+
+        this.save(user);
     }
 
     @Autowired

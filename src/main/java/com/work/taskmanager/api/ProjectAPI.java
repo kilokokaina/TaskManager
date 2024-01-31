@@ -29,7 +29,6 @@ public class ProjectAPI {
 
     @GetMapping("{id}")
     public ResponseEntity<Project> findById(@PathVariable(value = "id") Project project) {
-        log.info(project.getTaskSet().toString());
         return ResponseEntity.ok(project);
     }
 

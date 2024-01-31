@@ -32,7 +32,7 @@
                                 <div class="accordion-body">
                                     <ol class="list-group list-group-flush">
                                         <li class="list-group-item d-flex justify-content-between align-items-start" th:each="project : ${projects}">
-                                            <a class="link-body-emphasis text-decoration-none" th:href="'/project/' + ${project.getProjectId}" th:text="${project.getName}"/>
+                                            <a class="link-body-emphasis text-decoration-none" th:href="'/project/' + ${project.getProjectId}" th:text="${project.getTitle}"/>
                                             <span class="badge bg-primary rounded-pill">14</span>
                                         </li>
                                     </ol>

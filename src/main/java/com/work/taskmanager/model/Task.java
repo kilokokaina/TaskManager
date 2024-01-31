@@ -18,19 +18,17 @@ public class Task {
     private String title;
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User author;
+    private String author;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "task_user", joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> targetUser;
+    @ElementCollection(targetClass = TaskStatus.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "task_status", joinColumns = @JoinColumn(name = "task_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<TaskStatus> status;
 
     private Date creationDate = new Date();
     private Date targetDate;
+
+    private Long projectId;
 
     public Task() {}
 

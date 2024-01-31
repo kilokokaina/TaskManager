@@ -23,10 +23,10 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "org_user", inverseJoinColumns = @JoinColumn(name = "user_id"),
-            joinColumns = @JoinColumn(name = "org_id")
+            name = "user_task", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id")
     )
-    private Set<Organization> organizationSet;
+    private List<Task> taskList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

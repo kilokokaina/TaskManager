@@ -8,9 +8,8 @@ import com.work.taskmanager.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -43,12 +42,12 @@ public class ProjectServiceImpl implements ProjectService {
     public Project create(ProjectDTO projectDTO) {
         Project project = new Project();
 
-        project.setName(projectDTO.getName());
-        Set<User> userSet = new HashSet<>();
+        project.setTitle(projectDTO.getName());
+        List<User> userSet = new ArrayList<>();
         for (String username : projectDTO.getUserSet()) {
             userSet.add(userService.findByUsername(username));
         }
-        project.setUserSet(userSet);
+        project.setUserList(userSet);
 
         return this.save(project);
     }
