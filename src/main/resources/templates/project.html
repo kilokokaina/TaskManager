@@ -28,14 +28,54 @@
     </head>
     <body>
         <main>
+            <!-- Modal -->
+            <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="container text-center">
+                                <div class="row">
+                                    <div class="col d-flex justify-content-start align-items-center">
+                                        <h1 class="modal-title fs-5" id="taskModalTitle"></h1>
+                                    </div>
+                                    <div class="col d-flex justify-content-start align-items-center">
+                                        <button class="dropdown-item" id="taskStatus" onclick="changeStatus(this)">
+                                            <span class="badge text-bg-warning">Назначенно</span>
+                                        </button>
+                                    </div>
+                                    <div class="col d-flex justify-content-end align-items-center">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body" id="taskModalText" style="background-color: grey;">
+                        </div>
+                        <div class="modal-footer">
+                            <div class="input-group">
+                                <label class="btn btn-outline-secondary" id="button-addon1">
+                                    <img src="/img/attach-file.png" width="20" height="20">
+                                    <input type="file" hidden>
+                                </label>
+                                <input type="text" class="form-control" id="comment-input" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="sendComment()">
+                                    <img src="/img/send-message.png" width="20" height="20">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div th:insert="~{partials/nav-modal :: nav-modal}"></div>
             <p hidden="hidden" id="project-id" th:text="${project.getProjectId}"></p>
 
             <div class="container mt-1">
                 <h3 th:text="${project.getTitle}"/>
+
                 <div class="d-flex justify-content-center">
                     <div class="table-responsive">
-                        <table class="table table-borderless">
+                        <table class="table table-borderless" id="task-table">
                             <thead>
                                 <tr>
                                     <th scope="col">Назначенно</th>
@@ -45,55 +85,64 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">
-                                    <div class="card bg-warning-subtle" style="width: 18rem;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="#" class="card-link">Card link</a>
-                                            <a href="#" class="card-link">Another link</a>
-                                        </div>
-                                    </div>
-                                    </th>
                                     <td>
-                                    <div class="card bg-info-subtle" style="width: 18rem;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="#" class="card-link">Card link</a>
-                                            <a href="#" class="card-link">Another link</a>
-                                        </div>
-                                    </div>
+                                        <table class="table table-borderless" id="assigned">
+                                            <tbody>
+                                                <tr th:each="task : ${projectTaskSet}" th:switch="${task.getStatus}">
+                                                    <td th:case="'ASSIGNED'">
+                                                        <div class="card bg-warning-subtle" style="width: 18rem;">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title" th:text="${task.getTitle}"/>
+                                                                <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${task.getAuthor}"/>
+                                                                <p class="card-text" th:text="${task.getDescription}"/>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </td>
                                     <td>
-                                    <div class="card bg-success-subtle" style="width: 18rem;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="#" class="card-link">Card link</a>
-                                            <a href="#" class="card-link">Another link</a>
-                                        </div>
-                                    </div>
+                                        <table class="table table-borderless" id="in_work">
+                                            <tbody>
+                                                <tr th:each="task : ${projectTaskSet}" th:switch="${task.getStatus}">
+                                                    <td th:case="'IN_WORK'">
+                                                        <div class="card bg-info-subtle" style="width: 18rem;">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title" th:text="${task.getTitle}"/>
+                                                                <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${task.getAuthor}"/>
+                                                                <p class="card-text" th:text="${task.getDescription}"/>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry the Bird</td>
-                                    <td>@twitter</td>
+                                    <td>
+                                        <table class="table table-borderless" id="done">
+                                            <tbody>
+                                                <tr th:each="task : ${projectTaskSet}" th:switch="${task.getStatus}">
+                                                    <td th:case="'DONE'">
+                                                        <div class="card bg-success-subtle" style="width: 18rem;">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title" th:text="${task.getTitle}"/>
+                                                                <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${task.getAuthor}"/>
+                                                                <p class="card-text" th:text="${task.getDescription}"/>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+
             <div class="container" id="bottom">
                 <div th:if="${curator} OR ${admin}" class="accordion mt-5" id="accordionExample">
                     <div class="accordion-item">
@@ -116,6 +165,10 @@
                                 </div>
                                 <div class="col-auto">
                                     <input type="text" id="taskDescribe" class="form-control">
+                                </div>
+                                <div class="col-auto">
+                                    <label for="formFile" class="col-form-label">Файлы</label>
+                                    <input class="form-control" type="file" id="formFile" multiple>
                                 </div>
 
                                 <div class="btn-group mt-3 mb-3" role="group" aria-label="Button group with nested dropdown">
@@ -142,13 +195,24 @@
                     </div>
                 </div>
 
-                <div th:each="task : ${taskSet}">
+                <div th:if="${curator} OR ${admin}" th:each="task : ${projectTaskSet}">
                     <div class="card mt-3">
                         <div class="card-header" th:text="${task.getAuthor}"/>
                         <div class="card-body">
                             <h5 class="card-title" th:text="${task.getTitle}"/>
                             <p class="card-text" th:text="${task.getDescription}"/>
-                            <a href="#" class="btn btn-warning-subtle">Посмотреть</a>
+                            <button type="button" class="btn btn-outline-warning" th:id="${task.getTaskId}" onclick="test(this)">Посмотреть</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:unless="${curator} OR ${admin}" th:each="task : ${userTaskSet}">
+                    <div class="card mt-3">
+                        <div class="card-header" th:text="${task.getAuthor}"/>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${task.getTitle}"/>
+                            <p class="card-text" th:text="${task.getDescription}"/>
+                            <button type="button" class="btn btn-outline-warning" th:id="${task.getTaskId}" onclick="test(this)">Посмотреть</button>
                         </div>
                     </div>
                 </div>

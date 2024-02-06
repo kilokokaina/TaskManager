@@ -7,8 +7,6 @@ async function login() {
         password: password
     };
 
-    console.log(JSON.stringify(userData));
-
     let response = await fetch('/auth/rest', {
         method: 'POST',
         headers: {

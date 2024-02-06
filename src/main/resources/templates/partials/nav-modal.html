@@ -13,7 +13,7 @@
     <!-- Offcanvas Block --->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="--bs-offcanvas-width: 300px;">
         <div class="offcanvas-header">
-            <h5 sec:authorize="isAuthenticated()">Привет, <span th:remove="tag" sec:authentication="name"></span>! 👋🏻</h5>
+            <h5 sec:authorize="isAuthenticated()">Привет, <span sec:authentication="name" id="username"></span>! 👋🏻</h5>
             <h5 sec:authorize="!isAuthenticated()">Привет, незнакомец! 🥷🏻</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>

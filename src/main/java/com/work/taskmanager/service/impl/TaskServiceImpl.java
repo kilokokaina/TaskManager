@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -38,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
 
         task.setTitle(taskDTO.getTitle());
         task.setDescription(taskDTO.getDescription());
-        task.setStatus(Collections.singleton(TaskStatus.ASSIGNED));
+        task.setStatus(TaskStatus.ASSIGNED.name());
         task.setProjectId(taskDTO.getProjectId());
         task.setAuthor(user.getUsername());
 
@@ -57,7 +56,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> findAllByAuthor(String username) {
-        return taskRepository.findAllByAuthor(userService.findByUsername(username));
+        return taskRepository.findAllByAuthor(username);
+    }
+
+    public List<Task> findByProject(Long projectId) {
+        return taskRepository.findAllByProjectId(projectId);
     }
 
     @Override

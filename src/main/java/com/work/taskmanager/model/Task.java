@@ -2,11 +2,9 @@ package com.work.taskmanager.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,13 +15,13 @@ public class Task {
 
     private String title;
     private String description;
-
     private String author;
+    private String status;
 
-    @ElementCollection(targetClass = TaskStatus.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "task_status", joinColumns = @JoinColumn(name = "task_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<TaskStatus> status;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "task_comment", joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id"))
+    private List<Comment> commentList;
 
     private Date creationDate = new Date();
     private Date targetDate;
