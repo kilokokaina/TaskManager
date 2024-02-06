@@ -20,14 +20,52 @@
         <main>
             <div th:insert="~{partials/nav-modal :: nav-modal}"></div>
             <div class="container mt-1">
-                <h3>Проекты</h3>
-                <div th:each="project : ${projects}">
-                    <a th:href="'project/' + ${project.getProjectId}" th:text="${project.getTitle}"/>
+                <div class="container text-center">
+                    <div class="row">
+                        <div class="col">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                        <div class="col">
+                            Скоро наступит срок исполнения
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    Задача №12
+                                </div>
+                                <div class="card-body" style="width: 18rem;">
+                                    <h5 class="card-title">Pfdggdfgdfgdfgdfg</h5>
+                                    <p class="card-text">dfgdfgdfgfg</p>
+                                    <button type="button" class="btn btn-outline-warning">Посмотреть</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                    </div>
                 </div>
             </div>
         </main>
 
         <script type="text/javascript" th:src="@{/js/auth.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('myChart');
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['В работе', 'Выполнено'],
+                    datasets: [{
+                        label: 'Мои задачи',
+                        data: [12, 19],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    radius: '50%'
+                }
+            });
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
 </html>

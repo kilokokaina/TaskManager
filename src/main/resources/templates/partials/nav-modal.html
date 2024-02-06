@@ -31,9 +31,13 @@
                             <div id="collapseOneProjects" class="accordion-collapse collapse" data-bs-parent="#accordionProjects">
                                 <div class="accordion-body">
                                     <ol class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                                            <a class="link-body-emphasis text-decoration-none" href="#">Новый проект</a>
+                                            <span class="badge bg-primary rounded-pill">+</span>
+                                        </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-start" th:each="project : ${projects}">
                                             <a class="link-body-emphasis text-decoration-none" th:href="'/project/' + ${project.getProjectId}" th:text="${project.getTitle}"/>
-                                            <span class="badge bg-primary rounded-pill">14</span>
+                                            <span class="badge bg-primary rounded-pill task-span" th:id="'project-' + ${project.getProjectId}">1</span>
                                         </li>
                                     </ol>
                                 </div>
@@ -41,11 +45,30 @@
                         </div>
                     </div>
                 </li>
-                <li class="list-group-item d-flex justify-content-center">
-                    <div>
-                        <a class="d-block link-body-emphasis text-decoration-none" role="button">
-                            <img th:src="@{/img/task-2.png}" width="30" height="30"> Мои задачи
-                        </a>
+                <li class="list-group-item">
+                    <div class="accordion" id="accordionTasks">
+                        <div class="accordion-item" style="border: none">
+                            <div class="accordion-header d-flex justify-content-center">
+                                <a class="d-block link-body-emphasis text-decoration-none" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOneTasks"
+                                   aria-expanded="true" aria-controls="collapseOneProjects">
+                                    <img th:src="@{/img/task-2.png}" width="30" height="30"> Задачи
+                                </a>
+                            </div>
+                            <div id="collapseOneTasks" class="accordion-collapse collapse" data-bs-parent="#accordionTasks">
+                                <div class="accordion-body">
+                                    <ol class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                                            <a class="link-body-emphasis text-decoration-none" th:href="@{/task?is_author=false}">Назначенные</a>
+                                            <span class="badge bg-primary rounded-pill" id="assigned-tasks">+</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                                            <a class="link-body-emphasis text-decoration-none" th:href="@{/task?is_author=true}">Мои задачи</a>
+                                            <span class="badge bg-primary rounded-pill" id="author-tasks">+</span>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </li>
                 <li class="list-group-item d-flex justify-content-center">
@@ -113,7 +136,7 @@
                     Вы уверены, что хотите выйти из своего аккаунта?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" onclick="location.href='/logout'">Выйти</button>
+                    <a type="button" class="btn btn-warning" href="/logout">Выйти</a>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Остаться</button>
                 </div>
             </div>

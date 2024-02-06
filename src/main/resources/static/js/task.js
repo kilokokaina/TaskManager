@@ -38,7 +38,6 @@ async function createTask() {
 
 function test(element) {
     const testModal = new bootstrap.Modal(document.getElementById('taskModal'));
-
     let taskId = element.getAttribute('id');
     selectedTaskId = taskId;
 
@@ -197,7 +196,7 @@ async function changeStatus(event) {
 
     function sendRequest(status, element) {
         fetch(`/api/task/status/${selectedTaskId}?status=${status}`, {
-            method: 'PUT'
+            method: 'GET'
         }).then(async response => {
             let result = response.status;
             if (result === 200) {

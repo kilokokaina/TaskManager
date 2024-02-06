@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,7 +53,7 @@ public class TaskAPI {
         return ResponseEntity.ok(task);
     }
 
-    @GetMapping("fbp/{id}")
+    @GetMapping("find_by_project/{id}")
     public ResponseEntity<List<Task>> findByProject(@PathVariable(value = "id") Long projectId,
                                                     @RequestParam(name = "status") String status) {
         List<Task> taskList = taskService.findByProject(projectId);
@@ -68,9 +69,18 @@ public class TaskAPI {
         return ResponseEntity.ok(taskList);
     }
 
-    @GetMapping("test/{id}")
-    public ResponseEntity<List<Task>> findTaskByAuthor(@PathVariable(value = "id") User user) {
-        return ResponseEntity.ok(taskService.findAllByAuthor(user.getUsername()));
+    @GetMapping("find_by_user")
+    public ResponseEntity<List<Task>> findByUser(@RequestParam(name = "is_author") boolean isAuthor,
+                                                 Authentication authentication) {
+        List<Task> resultList = new ArrayList<>();
+
+        if (authentication != null) {
+            String username = authentication.getName();
+            if (isAuthor) resultList.addAll(taskService.findAllByAuthor(username));
+            else resultList.addAll(userService.findByUsername(username).getTaskList());
+        }
+
+        return ResponseEntity.ok(resultList);
     }
 
     @PostMapping("comment/{id}")
@@ -87,12 +97,16 @@ public class TaskAPI {
         return ResponseEntity.ok(comment);
     }
 
-    @PutMapping("status/{id}")
+    @GetMapping("status/{id}")
     public ResponseEntity<HttpStatus> changeStatus(@PathVariable(value = "id") Task task,
                                                    @RequestParam(name = "status") String status) {
-
         task.setStatus(status); taskService.save(task);
         return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("user_list/{id}")
+    public ResponseEntity<List<User>> getUsers(@PathVariable(value = "id") Long taskId) {
+        return ResponseEntity.ok(userService.findByTaskId(taskId));
     }
 
 }
