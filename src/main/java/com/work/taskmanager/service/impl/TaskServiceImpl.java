@@ -18,12 +18,10 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final UserServiceImpl userService;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, UserServiceImpl userService) {
+    public TaskServiceImpl(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.userService = userService;
     }
 
     @Override

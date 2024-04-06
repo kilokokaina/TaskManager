@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-status-bar" content="#212130">
+        <meta name="theme-color" content="#212130">
+
+        <title>Главная</title>
+
+        <!-- Favicon icon -->
+        <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}">
+
+        <!-- All StyleSheet -->
+        <link rel="stylesheet" th:href="@{/v2/vendor/bootstrap-select/dist/css/bootstrap-select.min.css}">
+        <link rel="stylesheet" th:href="@{/v2/vendor/owl-carousel/owl.carousel.css}">
+
+        <!-- Globle CSS -->
+        <link rel="stylesheet" th:href="@{/v2/css/style.css}">
+        <link rel="stylesheet" th:href="@{/v2/css/chat.css}">
+        <link rel="manifest" th:href="@{/manifest.json}">
+
+        <title th:text="${project.getProject.getTitle}"/>
+    </head>
+    <body>
+        <div id="main-wrapper">
+            <div th:insert="~{partials/v2-fragments :: nav-modal}"></div>
+
+            <!--Task Offcanvas-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="taskOffcanvas" aria-labelledby="taskOffcanvasLabel" style="background-color: #212130">
+                <div class="offcanvas-header d-flex justify-content-center">
+                    <h5 class="offcanvas-title" id="taskOffcanvasLabel">Offcanvas right</h5>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <h5 class="card-title text-white" id="offcanvasTaskTitle"></h5>
+                                        <div class="d-flex align-items-center">
+                                            <button class="dropdown-item" id="offcanvasTaskStatus" onclick="changeStatus(this)">
+                                                <span class="badge badge-warning">Назначенно</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body mb-0">
+                                        <p class="card-text" id="offcanvasTaskDescribe"></p>
+                                        <p class="card-text"><b>Исполнители</b></p>
+
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 text-white" id="offcanvasTaskAuthor"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h5>Комментарии</h5>
+                                <div id="chat"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="offcanvas-bottom d-flex justify-content-center mb-4 mt-4">
+                    <div class="container-fluid">
+                        <div class="col">
+                            <div class="row">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="comment-input" placeholder="Сообщение..." aria-label="Comment message" aria-describedby="button-addon2">
+                                    <button class="btn btn btn-light" type="button" id="button-addon2" onclick="sendComment()">
+                                        <img src="/img/send.png" width="20" height="20">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas" aria-label="Close">Закрыть</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p hidden="hidden" id="project-id" th:text="${project.getProject.getProjectId}"></p>
+
+            <div class="content-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-center">
+                                <div class="alert alert-primary alert-dismissible fade show">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <h3 class="mt-1 mb-1" th:text="${project.getProject.getTitle}"/>
+                                            <h5 class="mb-0" th:text="${project.getProject.getDescription}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-responsive" id="task-table">
+                                        <thead>
+                                        <tr>
+                                            <th>Назначенно</th>
+                                            <th>В работе</th>
+                                            <th>Выполненно</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <table class="table table-borderless" id="assigned">
+                                                        <tbody>
+                                                        <tr th:each="task : ${project.getProjectTaskList}" th:switch="${task.getStatus}">
+                                                            <td th:case="'ASSIGNED'">
+                                                                <div class="card text-white bg-dark" style="width: 18rem;">
+                                                                    <div class="card-header">
+                                                                        <h6 class="card-title text-white" th:text="${task.getTitle}"/>
+                                                                    </div>
+                                                                    <div class="card-footer bg-transparent border-0 text-white" th:text="${task.getAuthor}"/>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="table table-borderless" id="in_work">
+                                                        <tbody>
+                                                        <tr th:each="task : ${project.getProjectTaskList}" th:switch="${task.getStatus}">
+                                                            <td th:case="'IN_WORK'">
+                                                                <div class="card text-white bg-warning" style="width: 18rem;">
+                                                                    <div class="card-header">
+                                                                        <h6 class="card-title text-white" th:text="${task.getTitle}"/>
+                                                                    </div>
+                                                                    <div class="card-footer bg-transparent border-0 text-white" th:text="${task.getAuthor}"/>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table class="table table-borderless" id="done">
+                                                        <tbody>
+                                                        <tr th:each="task : ${project.getProjectTaskList}" th:switch="${task.getStatus}">
+                                                            <td th:case="'DONE'">
+                                                                <div class="card text-white bg-secondary" style="width: 18rem;">
+                                                                    <div class="card-header">
+                                                                        <h6 class="card-title text-white" th:text="${task.getTitle}"/>
+                                                                    </div>
+                                                                    <div class="card-footer bg-transparent border-0 text-white" th:text="${task.getAuthor}"/>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <h3>Задачи</h3>
+                            <div th:if="${curator} OR ${admin}" class="accordion" id="accordionExample">
+                                <div class="accordion accordion-primary" id="accordion-one">
+                                    <div class="accordion-item">
+                                        <div class="accordion-header rounded-lg collapsed" id="headingOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-controls="collapseOne" aria-expanded="false" role="button">
+                                            <span class="accordion-header-icon"></span>
+                                            <span class="accordion-header-text">Добавить задачу</span>
+                                            <span class="accordion-header-indicator"></span>
+                                        </div>
+                                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="col-auto">
+                                                    <label for="taskTitle" class="col-form-label">Название задачи</label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <input type="text" id="taskTitle" class="form-control">
+                                                </div>
+
+                                                <div class="col-auto">
+                                                    <label for="taskDescribe" class="col-form-label">Описание задачи</label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <input type="text" id="taskDescribe" class="form-control">
+                                                </div>
+
+                                                <div class="col-auto">
+                                                    <label for="taskTargetDate" class="col-form-label">Время выполнения</label>
+                                                </div>
+                                                <div class="col-auto d-flex justify-content-center">
+                                                    <input id="taskTargetDate" type="hidden" data-inline="true" data-time="true" class="form-control">
+                                                </div>
+
+                                                <div class="col-auto">
+                                                    <label for="formFile" class="col-form-label">Файлы</label>
+                                                    <input class="form-control" type="file" id="formFile" multiple>
+                                                </div>
+
+                                                <div class="btn-group mt-3 mb-3" role="group" aria-label="Button group with nested dropdown">
+                                                    <div class="btn-group" role="group">
+                                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Исполнители
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li th:each="user : ${project.getProject.getUserList}">
+                                                                <div class="dropdown-item">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" th:id="'userCheck-' + ${user.getUserId}"
+                                                                               onclick="this.setAttribute('value', this.value * -1)" value='-1'>
+                                                                        <label class="form-check-label" th:for="'userCheck-' + ${user.getUserId}" th:text="${user.getUsername}"/>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <button type="button" class="btn btn-info" onclick="createTask()">Создать задачу</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:if="${curator} OR ${admin}" th:each="task : ${project.getProjectTaskList}">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title" th:text="${task.getTitle}"/>
+                                    </div>
+                                    <div class="card-footer d-sm-flex justify-content-between align-items-center">
+                                        <div class="card-footer-link mb-4 mb-sm-0">
+                                            <p class="card-text text-dark" th:text="'Назначил: ' + ${task.getAuthor}"/>
+                                        </div>
+
+                                        <button class="btn btn-primary" th:id="${task.getTaskId}" onclick="offcanvasTest(this)">Подробнее</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:unless="${curator} OR ${admin}" th:each="task : ${project.getUserTaskList}">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title" th:text="${task.getTitle}"/>
+                                    </div>
+                                    <div class="card-footer d-sm-flex justify-content-between align-items-center">
+                                        <div class="card-footer-link mb-4 mb-sm-0">
+                                            <p class="card-text text-dark d-inline" th:text="${task.getAuthor}"/>
+                                        </div>
+
+                                        <button class="btn btn-primary" th:id="${task.getTaskId}" onclick="offcanvasTest(this)">Подробнее</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 mb-5">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3>Участники</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div th:each="user : ${project.getProject.getUserList}">
+                                                <p th:text="${user.getUsername}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:insert="~{partials/v2-fragments :: footer}"></div>
+        <script type="text/javascript" th:src="@{/js/task.js}"></script>
+    </body>
+</html>

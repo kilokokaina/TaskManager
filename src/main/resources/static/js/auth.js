@@ -7,6 +7,8 @@ async function login() {
         password: password
     };
 
+    console.log(userData);
+
     let response = await fetch('/auth/rest', {
         method: 'POST',
         headers: {

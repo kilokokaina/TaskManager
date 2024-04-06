@@ -15,7 +15,7 @@
         <link rel="shortcut icon" th:href="@{/img/favicon.ico}">
         <link rel="manifest" th:href="@{/manifest.json}">
 
-        <title th:text="${project.getTitle}"/>
+        <title th:text="${project.getProject.getTitle}"/>
         
         <style>
             @media screen and (max-width: 1000px) {
@@ -69,11 +69,11 @@
             </div>
 
             <div th:insert="~{partials/nav-modal :: nav-modal}"></div>
-            <p hidden="hidden" id="project-id" th:text="${project.getProjectId}"></p>
+            <p hidden="hidden" id="project-id" th:text="${project.getProject.getProjectId}"></p>
 
             <div class="container mt-1">
-                <h3 th:text="${project.getTitle}"/>
-                <div class="alert alert-light" role="alert" th:text="${project.getDescription}"/>
+                <h3 th:text="${project.getProject.getTitle}"/>
+                <div class="alert alert-light" role="alert" th:text="${project.getProject.getDescription}"/>
 
                 <div class="d-flex justify-content-center">
                     <div class="table-responsive">
@@ -90,7 +90,7 @@
                                     <td>
                                         <table class="table table-borderless" id="assigned">
                                             <tbody>
-                                                <tr th:each="task : ${projectTaskSet}" th:switch="${task.getStatus}">
+                                                <tr th:each="task : ${project.getProjectTaskList}" th:switch="${task.getStatus}">
                                                     <td th:case="'ASSIGNED'">
                                                         <div class="card text-bg-secondary" style="width: 18rem;">
                                                             <div class="card-body">
@@ -107,7 +107,7 @@
                                     <td>
                                         <table class="table table-borderless" id="in_work">
                                             <tbody>
-                                                <tr th:each="task : ${projectTaskSet}" th:switch="${task.getStatus}">
+                                                <tr th:each="task : ${project.getProjectTaskList}" th:switch="${task.getStatus}">
                                                     <td th:case="'IN_WORK'">
                                                         <div class="card text-bg-primary" style="width: 18rem;">
                                                             <div class="card-body">
@@ -124,7 +124,7 @@
                                     <td>
                                         <table class="table table-borderless" id="done">
                                             <tbody>
-                                                <tr th:each="task : ${projectTaskSet}" th:switch="${task.getStatus}">
+                                                <tr th:each="task : ${project.getProjectTaskList}" th:switch="${task.getStatus}">
                                                     <td th:case="'DONE'">
                                                         <div class="card text-bg-success" style="width: 18rem;">
                                                             <div class="card-body">
@@ -188,7 +188,7 @@
                                             Исполнители
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li th:each="user : ${project.getUserList}">
+                                            <li th:each="user : ${project.getProject.getUserList}">
                                                 <div class="dropdown-item">
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" th:id="'userCheck-' + ${user.getUserId}"
@@ -206,7 +206,7 @@
                     </div>
                 </div>
 
-                <div th:if="${curator} OR ${admin}" th:each="task : ${projectTaskSet}">
+                <div th:if="${curator} OR ${admin}" th:each="task : ${project.getProjectTaskList}">
                     <div class="card mt-3">
                         <div class="card-header" th:text="${task.getAuthor}"/>
                         <div class="card-body">
@@ -217,7 +217,7 @@
                     </div>
                 </div>
 
-                <div th:unless="${curator} OR ${admin}" th:each="task : ${userTaskSet}">
+                <div th:unless="${curator} OR ${admin}" th:each="task : ${project.getUserTaskList()}">
                     <div class="card mt-3">
                         <div class="card-header" th:text="${task.getAuthor}"/>
                         <div class="card-body">
@@ -230,7 +230,7 @@
 
                 <div class="mt-5">
                     <h3>Участники</h3>
-                    <div th:each="user : ${project.getUserList}">
+                    <div th:each="user : ${project.getProject.getUserList}">
                         <span th:text="${user.getUsername}"/>
                     </div>
                 </div>

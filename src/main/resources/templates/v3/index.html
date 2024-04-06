@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-layout-mode="detached" data-bs-theme="dark"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="https://www.thymeleaf.org"
+	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>Главная</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+		<!-- App favicon -->
+		<link rel="shortcut icon" th:href="@{/v3/images/favicon.ico}">
+
+		<!-- Theme Config Js -->
+		<script th:src="@{/v3/js/hyper-config.js}"></script>
+
+		<!-- App css -->
+		<link th:href="@{/v3/css/app-creative.min.css}" rel="stylesheet" type="text/css" id="app-style" />
+
+		<!-- Icons css -->
+		<link th:href="@{/v3/css/icons.min.css}" rel="stylesheet" type="text/css" />
+
+		<!-- Datatables css -->
+		<link th:href="@{/v3/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css}" rel="stylesheet" type="text/css" />
+		<link th:href="@{/v3/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css}" rel="stylesheet" type="text/css" />
+
+		<link rel="manifest" th:href="@{/manifest.json}">
+	</head>
+
+	<body>
+		<!-- Begin page -->
+		<div class="wrapper">
+
+			<div th:insert="~{partials/v3-fragments :: nav-modal}"></div>
+
+			<!-- ============================================================== -->
+			<!-- Start Page Content here -->
+			<!-- ============================================================== -->
+
+			<div class="content-page">
+				<div class="content">
+					<!-- Start Content-->
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-lg-8">
+								<div class="card mt-2">
+									<div class="card-body">
+										<table id="basic-datatable" class="table dt-responsive nowrap w-100">
+											<thead>
+											<tr>
+												<th>Name</th>
+												<th>Position</th>
+												<th>Office</th>
+												<th>Age</th>
+												<th>Start date</th>
+												<th>Salary</th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr>
+												<td>Tiger Nixon</td>
+												<td>System Architect</td>
+												<td>Edinburgh</td>
+												<td>61</td>
+												<td>2011/04/25</td>
+												<td>$320,800</td>
+											</tr>
+											<tr>
+												<td>Garrett Winters</td>
+												<td>Accountant</td>
+												<td>Tokyo</td>
+												<td>63</td>
+												<td>2011/07/25</td>
+												<td>$170,750</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card mt-2">
+									<div class="card-body">
+										<div class="accordion" id="accordionExample">
+											<div class="accordion-item">
+												<h2 class="accordion-header" id="headingOne">
+													<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+															aria-expanded="true" aria-controls="collapseOne">
+														Accordion Item #1
+													</button>
+												</h2>
+												<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+													 data-bs-parent="#accordionExample">
+													<div class="accordion-body">
+														<strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse
+														plugin adds the appropriate classes that we use to style each element. These classes control the overall
+														appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with
+														custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go
+														within the <code>.accordion-body</code>, though the transition does limit overflow.
+													</div>
+												</div>
+											</div>
+											<div class="accordion-item">
+												<h2 class="accordion-header" id="headingTwo">
+													<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+															data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+														Accordion Item #2
+													</button>
+												</h2>
+												<div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+													 data-bs-parent="#accordionExample">
+													<div class="accordion-body">
+														<strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse
+														plugin adds the appropriate classes that we use to style each element. These classes control the overall
+														appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with
+														custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go
+														within the <code>.accordion-body</code>, though the transition does limit overflow.
+													</div>
+												</div>
+											</div>
+											<div class="accordion-item">
+												<h2 class="accordion-header" id="headingThree">
+													<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+															data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+														Accordion Item #3
+													</button>
+												</h2>
+												<div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+													 data-bs-parent="#accordionExample">
+													<div class="accordion-body">
+														<strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse
+														plugin adds the appropriate classes that we use to style each element. These classes control the overall
+														appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with
+														custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go
+														within the <code>.accordion-body</code>, though the transition does limit overflow.
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- container -->
+
+				</div>
+				<!-- content -->
+
+				<!-- Footer Start -->
+				<footer class="footer">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-6">
+								<script>document.write(new Date().getFullYear())</script> © Hyper - Coderthemes.com
+							</div>
+							<div class="col-md-6">
+								<div class="text-md-end footer-links d-none d-md-block">
+									<a href="javascript: void(0);">About</a>
+									<a href="javascript: void(0);">Support</a>
+									<a href="javascript: void(0);">Contact Us</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</footer>
+				<!-- end Footer -->
+
+			</div>
+
+			<!-- ============================================================== -->
+			<!-- End Page content -->
+			<!-- ============================================================== -->
+
+		</div>
+		<!-- END wrapper -->
+
+		<div th:insert="~{partials/v3-fragments :: footer}"></div>
+
+		<!-- Datatables js -->
+		<script th:src="@{/v3/vendor/datatables.net/js/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/v3/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js}"></script>
+		<script th:src="@{/v3/vendor/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/v3/vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js}"></script>
+
+		<!-- Datatable Init js -->
+		<script th:src="@{/v3/js/pages/demo.datatable-init.js}"></script>
+
+	</body>
+</html>

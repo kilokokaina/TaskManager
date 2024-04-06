@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="https://www.thymeleaf.org"
+	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar" content="#212130">
+		<meta name="theme-color" content="#212130">
+
+		<title>Главная</title>
+		
+		<!-- Favicon icon -->
+		<link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}">
+		
+		<!-- All StyleSheet -->
+		<link rel="stylesheet" th:href="@{/v2/vendor/bootstrap-select/dist/css/bootstrap-select.min.css}">
+		<link rel="stylesheet" th:href="@{/v2/vendor/owl-carousel/owl.carousel.css}">
+		
+		<!-- Globle CSS -->
+		<link rel="stylesheet" th:href="@{/v2/css/style.css}">
+		<link rel="manifest" th:href="@{/manifest.json}">
+		
+	</head>
+	<body>
+		<div id="preloader">
+			<div class="lds-ripple">
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+
+		<div id="main-wrapper">
+			<div th:insert="~{partials/v2-fragments :: nav-modal}"></div>
+
+			<div class="content-body">
+				<!-- row -->
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">Basic Bar Chart</h4>
+								</div>
+								<div class="card-body">
+									<canvas id="doughnut_chart" width="87" height="87" style="display: block; box-sizing: border-box; height: 87px; width: 87px;"></canvas>
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="card" style="height: 18rem;">
+								<div class="card-header">
+									Скоро наступит срок исполнения
+								</div>
+								<div class="card-body" style="width: 18rem;">
+									<h5 class="card-title">Pfdggdfgdfgdfgdfg</h5>
+									<p class="card-text">dfgdfgdfgfg</p>
+									<button type="button" class="btn btn-outline-warning">Посмотреть</button>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+
+		<div th:insert="~{partials/v2-fragments :: footer}"></div>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script>
+			const ctx = document.getElementById('doughnut_chart');
+
+			new Chart(ctx, {
+				type: 'doughnut',
+				data: {
+					labels: ['В работе', 'Выполнено'],
+					datasets: [{
+						label: 'Мои задачи',
+						data: [12, 19],
+						borderWidth: 1
+					}]
+				},
+				options: {
+					radius: '50%'
+				}
+			});
+		</script>
+	</body>
+</html>

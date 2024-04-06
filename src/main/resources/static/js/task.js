@@ -36,21 +36,21 @@ async function createTask() {
     }
 }
 
-function test(element) {
-    const testModal = new bootstrap.Modal(document.getElementById('taskModal'));
+function offcanvasTest(element) {
+    let taskOffcanvas = new bootstrap.Offcanvas('#taskOffcanvas');
     let taskId = element.getAttribute('id');
     selectedTaskId = taskId;
 
     fetch(`/api/task/${taskId}`, { method: 'GET' }).then(async response => {
         let result = await response.json();
 
-        let taskStatus = document.getElementById('taskStatus');
+        let taskStatus = document.getElementById('offcanvasTaskStatus');
         switch (result.status) {
             case 'ASSIGNED':
-                taskStatus.innerHTML = '<span class="badge text-bg-warning">Назначенно</span>';
+                taskStatus.innerHTML = '<span class="badge text-bg-primary">Назначенно</span>';
                 break;
             case 'IN_WORK':
-                taskStatus.innerHTML = '<span class="badge text-bg-info">В работе</span>';
+                taskStatus.innerHTML = '<span class="badge text-bg-warning">В работе</span>';
                 break;
             case 'DONE':
                 taskStatus.innerHTML = '<span class="badge text-bg-success">Выполненно</span>';
@@ -61,87 +61,57 @@ function test(element) {
         let dateDDMMYY = date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear();
         let dateHHMM = date.getHours() + ':' + date.getMinutes();
 
-        document.getElementById('taskModalTitle').innerText = result.title;
-        let taskDialog = document.getElementById('taskModalText');
-        taskDialog.innerHTML = `
-            <span class="badge text-bg-dark mt-1">${dateDDMMYY}</span>
-            <div class="d-flex flex-row justify-content-start">
-                <div class="p-2">
-                    <img src="/img/user-profile.png" width="30" height="30">
-                </div>
-                <div class="p-2 card mt-1 border-info" style="max-width: 18rem;">
-                  <div class="card-header">
-                    ${result.author}
-                  </div>
-                  <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                      <p style="font-size: 1rem">${result.description}</p>
-                      <footer class="blockquote-footer" style="font-size: 0.8rem">${dateHHMM}</footer>
-                    </blockquote>
-                  </div>
-                </div>
-            </div>`;
+        document.getElementById('offcanvasTaskTitle').innerText = result.title;
+        document.getElementById('offcanvasTaskDescribe').innerText = result.description;
+        document.getElementById('offcanvasTaskAuthor').innerText = `${result.author}\n${dateDDMMYY}, ${dateHHMM}`;
+
+        let chatBox = document.getElementById('chat');
+        chatBox.innerHTML = '';
 
         result.commentList.forEach(comment => {
             let commentDate = new Date(comment.creationData);
             let commentDateDDMMYY = commentDate.getDay() + '.' + commentDate.getMonth() + '.' + commentDate.getFullYear();
             let commentDateHHMM = commentDate.getHours() + ':' + commentDate.getMinutes();
 
-            if (commentDateDDMMYY !== dateDDMMYY) {
-                taskDialog.innerHTML += `<span class="badge text-bg-dark mt-1">${commentDateDDMMYY}</span>`;
-            }
-
             if (comment.author === document.getElementById('username').innerHTML) {
-                taskDialog.innerHTML += `
+                chatBox.innerHTML += `
                     <div class="d-flex flex-row justify-content-end">
-                        <div class="p-2 card mt-1 border-success" style="max-width: 18rem;">
-                          <div class="card-header">
-                            ${comment.author}
-                          </div>
-                          <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                              <p style="font-size: 1rem">${comment.commentText}</p>
-                              <footer class="blockquote-footer" style="font-size: 0.8rem">${commentDateHHMM}</footer>
-                            </blockquote>
-                          </div>
+                        <div class="chat-msg-out">
+                            <span class="msg-author">${comment.author}</span>
+                            <p class="chat-msg-out">${comment.commentText}</p>
+                            <span class="msg-time">${commentDateHHMM}, ${commentDateDDMMYY}</span>
                         </div>
-                        <div class="p-2">
-                            <img src="/img/user-profile.png" width="30" height="30">
-                        </div>
+                        <img src="/img/user-profile.png" width="25" height="25">
                     </div>`;
-
             } else {
-                taskDialog.innerHTML += `
-                    <div class="p-2 d-flex flex-row justify-content-start">
-                        <div class="p-2">
-                            <img src="/img/user-profile.png" width="30" height="30">
-                        </div>
-                        <div class="p-2 card mt-1 border-info" style="max-width: 18rem;">
-                          <div class="card-header">
-                            ${comment.author}
-                          </div>
-                          <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                              <p style="font-size: 1rem">${comment.commentText}</p>
-                              <footer class="blockquote-footer" style="font-size: 0.8rem">${commentDateHHMM}</footer>
-                            </blockquote>
-                          </div>
+                chatBox.innerHTML += `
+                    <div class="d-flex flex-row justify-content-start">
+                        <img src="/img/user-profile.png" width="25" height="25">
+                        <div class="chat-msg-in">
+                            <span class="msg-author">${comment.author}</span>
+                            <p class="chat-msg-in">${comment.commentText}</p>
+                            <span class="msg-time">${commentDateHHMM}, ${commentDateDDMMYY}</span>
                         </div>
                     </div>`;
             }
         });
     });
 
-    testModal.show();
+    fetch(`/api/task/user_list/${taskId}`, {method: 'GET'}).then(async response => {
+        let result = await response.json();
+        result.forEach(user => console.log(user.username));
+    })
+
+    taskOffcanvas.show();
 }
 
 function sendComment() {
     let commentAuthor = document.getElementById('username').innerHTML;
-    let commentText = document.getElementById('comment-input').value;
+    let commentText = document.getElementById('comment-input');
     let taskId = selectedTaskId;
 
     let comment = {
-        commentText: commentText,
+        commentText: commentText.value,
         author: commentAuthor
     }
 
@@ -159,38 +129,31 @@ function sendComment() {
             let dateDDMMYY = date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear();
             let dateHHMM = date.getHours() + ':' + date.getMinutes();
 
-            document.getElementById('taskModalText').innerHTML += `
-                <span class="badge text-bg-dark mt-1">${dateDDMMYY}</span>
+            document.getElementById('chat').innerHTML += `
                 <div class="d-flex flex-row justify-content-end">
-                    <div class="p-2 card mt-1 border-success" style="max-width: 18rem;">
-                      <div class="card-header">
-                        ${result.author}
-                      </div>
-                      <div class="card-body">
-                        <blockquote class="blockquote mb-0">
-                          <p style="font-size: 1rem">${result.commentText}</p>
-                          <footer class="blockquote-footer" style="font-size: 0.8rem">${dateHHMM}</footer>
-                        </blockquote>
-                      </div>
+                    <div class="chat-msg-out">
+                        <span class="msg-author">${commentAuthor}</span>
+                        <p class="chat-msg-out">${commentText.value}</p>
+                        <span class="msg-time">${dateHHMM}, ${dateDDMMYY}</span>
                     </div>
-                    <div class="p-2">
-                        <img src="/img/user-profile.png" width="30" height="30">
-                    </div>
+                    <img src="/img/user-profile.png" width="25" height="25">
                 </div>`;
 
-            document.getElementById('comment-input').innerText = '';
+            commentText.value = '';
         }
     })
 }
+
+
 
 async function changeStatus(event) {
     let statusSpan = event.getElementsByClassName('badge');
     switch (statusSpan.item(0).innerHTML) {
         case 'Назначенно':
-            sendRequest('IN_WORK', '<span class="badge text-bg-info">В работе</span>');
+            sendRequest('IN_WORK', '<span class="badge text-bg-warning">В работе</span>');
             break;
         case 'В работе':
-            sendRequest('ASSIGNED', '<span class="badge text-bg-warning">Назначенно</span>');
+            sendRequest('ASSIGNED', '<span class="badge text-bg-secondary">Назначенно</span>');
             break;
     }
 

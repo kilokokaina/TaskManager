@@ -1,0 +1,60 @@
+div.chat-msg-in {
+    max-width: 18rem;
+    border-style: none;
+    border-radius: 5px;
+    background-color: rgb(249, 58, 11);
+    margin-left: 3px;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+div.chat-msg-out {
+    max-width: 18rem;
+    border-style: none;
+    border-radius: 5px;
+    background-color: rgb(245, 245, 245);
+    margin-right: 3px;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+p.chat-msg-in {
+    margin: 3px;
+    color: #FFFFFF;
+}
+p.chat-msg-out {
+    margin: 3px;
+    color: #0c0c0c;
+}
+div.chat-msg-in span.msg-author {
+    margin-left: 3px;
+    color: #FFFFFF;
+    font-weight: bold;
+    position: relative;
+    top: 3px;
+    left: 3px;
+}
+div.chat-msg-out span.msg-author {
+    margin-left: 3px;
+    color: dimgray;
+    font-weight: bold;
+    position: relative;
+    top: 3px;
+    left: 3px;
+}
+div.chat-msg-in span.msg-time {
+    margin-left: 3px;
+    margin-right: 5px;
+    color: #FFFFFF;
+    font-size: smaller;
+    position: relative;
+    bottom: 3px;
+    left: 3px;
+}
+div.chat-msg-out span.msg-time {
+    margin-left: 3px;
+    margin-right: 5px;
+    color: dimgray;
+    font-size: smaller;
+    position: relative;
+    bottom: 3px;
+    left: 3px;
+}
